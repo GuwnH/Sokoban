@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - SokoGuides{% endblock %}
+
+{% block content %}
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<img src="{% static 'img/logos/logo.png' %}" alt="Logo">
+
+<div class="jumbotron text-center bg-primary text-white p-5">
+    <h1>Welcome to SokoGuides!</h1>
+    <p>Your go-to source for solving Sokoban puzzles.</p>
+    <a href="{}" class="btn btn-light btn-lg">Browse Guides</a>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Step-by-Step Guides</h5>
+                <p class="card-text">Learn how to solve complex Sokoban puzzles with our detailed walkthroughs.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">User-Contributed Solutions</h5>
+                <p class="card-text">Explore strategies shared by other players.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Join the Community</h5>
+                <p class="card-text">Sign up to submit your own solutions and discuss with other players.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
