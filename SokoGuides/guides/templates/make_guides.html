@@ -4,22 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SokoGuides | Guide Creation</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/post.css') }}">
-    <script src="{{ url_for('static', filename='js/post.js') }}" defer></script>
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/post.css') }}">
+    <script src="{{ url_for('static', filename='js/post.js') }}" defer></script> -->
 </head>
 <body>
     <!-- {% extends 'base.html' %}
     {% block content %} -->
     <div class="post-container">
         <!-- Header Section -->
-        <div class="header">
-            <h2>SokoGuides 🧱</h2>
-            <nav>
-                <a href="{{ url_for('accessibility') }}">Accessibility</a>
-                <a href="{{ url_for('profile') }}">Profile</a>
-                <a href="{{ url_for('logout') }}">Logout</a>
-            </nav>
-        </div>
+        <!-- {%Extend from the base using jinja%} -->
 
         <!-- Guide Creation Form -->
         <div class="feed-container">
@@ -80,24 +73,85 @@
         }
 
         function insertAltText() {
-            alert("Alt text functionality coming soon!");
+            alert("Not yet!");
         }
     </script>
 
-    <style>
-        /* Basic Styling */
-        .post-container { width: 80%; margin: auto; font-family: Arial, sans-serif; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; font-weight: bold; margin-bottom: 5px; }
-        input[type="text"], textarea, input[type="file"] { width: 100%; padding: 8px; box-sizing: border-box; }
-        .btn { padding: 8px 12px; cursor: pointer; border: none; border-radius: 4px; }
-        .btn.green { background-color: #4CAF50; color: white; }
-        .btn.red { background-color: #f44336; color: white; }
-        .btn.btn-primary { background-color: #007BFF; color: white; }
-        .color-buttons { display: flex; gap: 10px; margin-top: 5px; }
-        .note { font-size: 0.9em; color: #555; margin-top: 5px; }
-        nav a { margin-right: 15px; text-decoration: none; color: #007BFF; }
-    </style>
-    {% endblock %}
+<style>
+    body {
+        background-image: url('/SokoGuides/guides/static/img/background_image.jpg'); 
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    .post-container { 
+        width: 80%; 
+        margin: auto; 
+        font-family: Arial, sans-serif; 
+        background-color: rgba(255, 255, 255, 0.9); 
+        padding: 20px; 
+        border-radius: 8px; 
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+        margin-top: 50px;
+    }
+
+    .form-group { 
+        margin-bottom: 15px; 
+    }
+
+    label { 
+        display: block; 
+        font-weight: bold; 
+        margin-bottom: 5px; 
+    }
+
+    input[type="text"], textarea, input[type="file"] { 
+        width: 100%; 
+        padding: 8px; 
+        box-sizing: border-box; 
+        border: 1px solid #ccc; 
+        border-radius: 4px; 
+    }
+
+    .btn { 
+        padding: 8px 12px; 
+        cursor: pointer; 
+        border: none; 
+        border-radius: 4px; 
+    }
+
+    .btn.green { 
+        background-color: #4CAF50; 
+        color: white; 
+    }
+
+    .btn.red { 
+        background-color: #f44336; 
+        color: white; 
+    }
+
+    .btn.btn-primary { 
+        background-color: #007BFF; 
+        color: white; 
+    }
+
+    .color-buttons { 
+        display: flex; 
+        gap: 10px; 
+        margin-top: 5px; 
+    }
+
+    .note { 
+        font-size: 0.9em; 
+        color: #555; 
+        margin-top: 5px; 
+    }
+</style>
+    <!-- {% endblock %} -->
 </body>
 </html>
