@@ -1,43 +1,37 @@
 {% extends 'base.html' %}
 
-{% block title %}Create Guide - SokoGuides{% endblock %}
-
 {% block content %}
-
-{% load static %}
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
-<img src="{% static 'img/logos/logo.png' %}" alt="Logo">
-
-<div class="jumbotron text-center bg-primary text-white p-5">
-    <h1>Welcome to SokoGuides!</h1>
-    <p>Your go-to source for solving Sokoban puzzles.</p>
-    <a href="{}" class="btn btn-light btn-lg">Browse Guides</a>
-</div>
-
-<div class="row mt-4">
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Step-by-Step Guides</h5>
-                <p class="card-text">Learn how to solve complex Sokoban puzzles with our detailed walkthroughs.</p>
-            </div>
+<div class="container mt-5">
+    <h2 class="mb-4">Create a New Guide</h2>
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="mb-3">
+            <label for="id_game" class="form-label">Select Game</label>
+            {{ form.game }}
         </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">User-Contributed Solutions</h5>
-                <p class="card-text">Explore strategies shared by other players.</p>
-            </div>
+
+        <div class="mb-3">
+            <label for="id_guide_level" class="form-label">Guide Level</label>
+            {{ form.guide_level }}
         </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Join the Community</h5>
-                <p class="card-text">Sign up to submit your own solutions and discuss with other players.</p>
-            </div>
+
+        <div class="mb-3">
+            <label for="id_guide_text" class="form-label">Guide Text (10,000 characters max)</label>
+            {{ form.guide_text }}
         </div>
-    </div>
+
+        <div class="mb-3">
+            <label for="id_number_of_moves" class="form-label">Number of Moves</label>
+            {{ form.number_of_moves }}
+        </div>
+
+        <div class="mb-3 form-check">
+            {{ form.colors_required }}
+            <label class="form-check-label" for="id_colors_required">Colors Required?</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit Guide</button>
+    </form>
 </div>
 {% endblock %}
