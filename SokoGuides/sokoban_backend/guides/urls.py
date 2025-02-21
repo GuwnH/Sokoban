@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import home, UserViewSet, GameViewSet, GuideViewSet
+from .views import home, signin, signup, UserViewSet, GameViewSet, GuideViewSet
 
 # API router for DRF
 router = DefaultRouter()
@@ -11,4 +11,6 @@ router.register(r'guides', GuideViewSet)
 urlpatterns = [
     path('', home, name='home'),  # Homepage route
     path('api/', include(router.urls)),  # API routes (e.g., /api/users/, /api/games/)
+    path('sign-in', signin, name='sign-in'),
+    path('sign-up', signup, name='sign-up')
 ]
