@@ -7,6 +7,12 @@ from .serializers import GameSerializer, GuideSerializer, UserSerializer
 def home(request):
     return render(request, 'home.html',{})  # Assumes "home.html" exists in your templates folder
 
+def signin(request):
+    return render(request, 'sign-in.html',{})  # Assumes "home.html" exists in your templates folder
+
+def signup(request):
+    return render(request, 'sign-up.html',{})  # Assumes "home.html" exists in your templates folder
+
 # API Views
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
