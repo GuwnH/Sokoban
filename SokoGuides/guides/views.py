@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from rest_framework import viewsets
 from .models import Game, Guide, User
 from .serializers import GameSerializer, GuideSerializer, UserSerializer
+from .forms import GuideForm
 
 # New homepage view (renders HTML)
 def home(request):
@@ -12,6 +13,19 @@ def signin(request):
 
 def signup(request):
     return render(request, 'sign-up.html',{})  # Assumes "home.html" exists in your templates folder
+
+def create_guide(request):
+    if request.method == 'POST':
+        form = GuideForm(request.POST)
+        if form.is_valid():
+            guide = form.save(commit=False)
+            guide.user = request.user  # Assign the logged-in user
+            guide.save()
+            return redirect('home')  # Redirect after successful creation
+    else:
+        form = GuideForm()
+    
+    return render(request, 'make_guides.html', {'form': form})
 
 # API Views
 class UserViewSet(viewsets.ModelViewSet):
