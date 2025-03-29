@@ -7,7 +7,28 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
 <img src="{% static 'img/logos/logo.png' %}" alt="Logo">
+<a href="{% url 'profile_detail' user_id=user.user_id %}">{{ user.username }}</a>
 
+<section class="user-info">
+    <h2>User Information</h2>
+    <p><strong>Display Name:</strong> {{ user.user_display }}</p>
+</section>
 
+<section class="user-guides">
+    <h2>Guides by {{ user.user_name }}</h2>
+    {% if guides %}
+        <ul>
+            {% for guide in guides %}
+                <li>
+                    <a href="{% url 'guide_detail' guide_id=guide.guide_id %}">
+                        {{ guide.game.game_name }} - Level {{ guide.guide_level }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No guides available.</p>
+    {% endif %}
+</section>
 
 {% endblock %}
