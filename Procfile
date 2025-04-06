@@ -1,1 +1,1 @@
-web: gunicorn Sokoban.wsgi
+web: gunicorn Sokoban.wsgi --workers=2
