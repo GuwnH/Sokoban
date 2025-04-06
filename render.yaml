@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: Sokoban
+    runtime: python
+    buildCommand: |
+      export PYTHONPATH="$PYTHONPATH:/opt/render/project/src"  # Add project root to Python path
+      pip install -r requirements.txt
+    startCommand: gunicorn Sokoban.SokoGuides.sokoban_backend.wsgi --workers=2
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: Sokoban.SokoGuides.sokoban_backend.settings
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
