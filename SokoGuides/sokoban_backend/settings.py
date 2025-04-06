@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -75,29 +76,28 @@ WSGI_APPLICATION = 'sokoban_backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-if os.getenv('RENDER'):
+if os.getenv('DATABASE_URL'):
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': os.getenv('MYSQLDATABASE'),
-            'USER': os.getenv('MYSQLUSER'),
-            'PASSWORD': os.getenv('MYSQLPASSWORD'),
-            'HOST': os.getenv('MYSQLHOST'),
-            'PORT': os.getenv('MYSQLPORT'),
-            'OPTIONS': {
-                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-            }
-        }
+        'default': dj_database_url.config(
+            default=os.getenv('DATABASE_URL'),
+            conn_max_age=600,
+            ssl_require=True
+        )
     }
+
+# MySQL fallback (for local development)
 else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'sokoguides2',
             'USER': 'root',
-            'PASSWORD': 'Bobsloblobtob00!',
+            'PASSWORD': '*************',
             'HOST': '127.0.0.1',
             'PORT': '3306',
+            'OPTIONS': {
+                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            }
         }
     }
 
