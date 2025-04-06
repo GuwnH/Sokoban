@@ -84,7 +84,9 @@ if os.getenv('RENDER'):
             'PASSWORD': os.getenv('MYSQLPASSWORD'),
             'HOST': os.getenv('MYSQLHOST'),
             'PORT': os.getenv('MYSQLPORT'),
-            'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"},
+            'OPTIONS': {
+                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            }
         }
     }
 else:
