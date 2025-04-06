@@ -1,34 +1,162 @@
 {% extends 'base.html' %}
 
-{% block title %}Home - SokoGuides{% endblock %}
+{% block title %}{{ profile_user.username }}'s Profile - SokoGuides{% endblock %}
 
 {% block content %}
 
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
 <img src="{% static 'img/logos/logo.png' %}" alt="Logo">
-<a href="{% url 'profile_detail' user_id=user.user_id %}">{{ user.username }}</a>
+
+<style>
+    /* Profile Page Styles */
+    .user-info {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+        max-width: 600px;
+    }
+
+    .user-guides {
+        margin-top: 30px;
+    }
+
+    .guide-list {
+        list-style: none;
+        padding: 0;
+        max-width: 600px;
+    }
+
+    .guide-item {
+        margin-bottom: 15px;
+        padding: 15px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        transition: transform 0.2s;
+    }
+
+    .guide-item:hover {
+        transform: translateY(-2px);
+    }
+
+    .guide-link {
+        display: flex;
+        justify-content: space-between;
+        text-decoration: none;
+        color: #333;
+    }
+
+    .game-name {
+        font-weight: bold;
+        flex: 2;
+    }
+
+    .guide-level {
+        color: #6c757d;
+        flex: 1;
+        text-align: center;
+    }
+
+    .guide-moves {
+        color: #28a745;
+        flex: 1;
+        text-align: right;
+    }
+
+    .no-guides {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        max-width: 600px;
+    }
+
+    .btn-create, .btn-logout {
+        display: inline-block;
+        padding: 10px 20px;
+        margin-top: 15px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .btn-create {
+        background-color: #007bff;
+        color: white;
+        border: 1px solid #007bff;
+    }
+
+    .btn-create:hover {
+        background-color: #0069d9;
+        border-color: #0062cc;
+    }
+
+    .btn-logout {
+        background-color: #dc3545;
+        color: white;
+        border: 1px solid #dc3545;
+        margin-left: 10px;
+    }
+
+    .btn-logout:hover {
+        background-color: #c82333;
+        border-color: #bd2130;
+    }
+
+    .profile-actions {
+        margin-top: 30px;
+    }
+</style>
+
+{% if user.is_authenticated and user.id == profile_user.id %}
+    <a href="{% url 'profile_detail' user_id=user.id %}" class="profile-link">My Profile</a>
+{% endif %}
 
 <section class="user-info">
     <h2>User Information</h2>
-    <p><strong>Display Name:</strong> {{ user.user_display }}</p>
+    <p><strong>Username:</strong> {{ profile_user.username }}</p>
+    <p><strong>Display Name:</strong> {{ user_profile.user_display }}</p>
+    <p><strong>Joined:</strong> {{ profile_user.date_joined|date:"F Y" }}</p>
 </section>
 
 <section class="user-guides">
-    <h2>Guides by {{ user.user_name }}</h2>
+    <h2>
+        Guides by 
+        {% if user_profile.user_display %}
+            {{ user_profile.user_display }}
+        {% else %}
+            {{ profile_user.username }}
+        {% endif %}
+    </h2>
     {% if guides %}
-        <ul>
+        <ul class="guide-list">
             {% for guide in guides %}
-                <li>
-                    <a href="{% url 'guide_detail' guide_id=guide.guide_id %}">
-                        {{ guide.game.game_name }} - Level {{ guide.guide_level }}
+                <li class="guide-item">
+                    <a href="{% url 'guide_detail' guide_id=guide.guide_id %}" class="guide-link">
+                        <span class="game-name">{{ guide.game.game_name }}</span>
+                        <span class="guide-level">Level {{ guide.guide_level }}</span>
+                        <span class="guide-moves">{{ guide.number_of_moves }} moves</span>
                     </a>
                 </li>
             {% endfor %}
         </ul>
     {% else %}
-        <p>No guides available.</p>
+        <div class="no-guides">
+            <p>No guides available yet.</p>
+            {% if user.is_authenticated and user.id == profile_user.id %}
+                <a href="{% url 'create_guide' %}" class="btn-create">Create Your First Guide</a>
+            {% endif %}
+        </div>
     {% endif %}
 </section>
+
+{% if user.is_authenticated and user.id == profile_user.id %}
+<section class="profile-actions">
+    <a href="{% url 'sign_out' %}" class="btn-logout">Sign Out</a>
+</section>
+{% endif %}
 
 {% endblock %}

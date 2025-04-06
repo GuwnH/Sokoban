@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +26,7 @@ SECRET_KEY = 'django-insecure-w^@&qy!rc)pwmf$3an#i%x5wdp2lv4(1r%!8*g9u*$a+2&=6a#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1','hguwn25.pythonanywhere.com'] 
 
 # Application definition
 
@@ -74,17 +75,31 @@ WSGI_APPLICATION = 'sokoban_backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sokoguides',
-        'USER': 'root',
-        'PASSWORD': 'Bobsloblobtob00!',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
+if 'pythonanywhere' in os.environ.get('PYTHONANYWHERE_DOMAIN', ''):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.getenv('DB_NAME', 'hguwn25$sokoguides2'),  # Format: username$dbname
+            'USER': os.getenv('DB_USER', 'hguwn25'),  # Your PA username
+            'PASSWORD': os.getenv('DB_PASSWORD', 'Bobsloblobtob00!'),  # Set in PA Databases tab
+            'HOST': os.getenv('DB_HOST', 'hguwn25.mysql.pythonanywhere-services.com'),
+            'PORT': '3306',
+            'OPTIONS': {
+                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            }
+        }
     }
-}
-
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'sokoguides2',
+            'USER': 'root',
+            'PASSWORD': 'Bobsloblobtob00!',
+            'HOST': '127.0.0.1',
+            'PORT': '3306',
+        }
+    }
 
 
 # Password validation
@@ -127,3 +142,6 @@ STATICFILES_DIRS = [BASE_DIR / "guides" / "static"]  # Points to the static fold
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGOUT_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'home'

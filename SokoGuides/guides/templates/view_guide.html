@@ -12,7 +12,13 @@
 <h1>{{ guide.game.game_name }} - Level {{ guide.guide_level }}</h1>
 <main>
     <section class="guide">
-        <h2>Guide by {{ guide.user.user_name }}</h2>
+        <h2>Guide by 
+            {% if guide.user.userprofile.user_display %}
+                {{ guide.user.userprofile.user_display }}
+            {% else %}
+                {{ guide.user.username }}
+            {% endif %}
+        </h2>
         <p><strong>Game:</strong> {{ guide.game.game_name }}</p>
         <p><strong>Level:</strong> {{ guide.guide_level }}</p>
         <p><strong>Moves:</strong> {{ guide.number_of_moves }}</p>

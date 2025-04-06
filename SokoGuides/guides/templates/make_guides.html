@@ -1,46 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SokoGuides | Guide Creation</title>
-    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/post.css') }}">
-    <script src="{{ url_for('static', filename='js/post.js') }}" defer></script> -->
-</head>
-<body>
-    <!-- {% extends 'base.html' %}
-    {% block content %} -->
-    <div class="post-container">
-        <!-- Header Section -->
-        <!-- {%Extend from the base using jinja%} -->
+{% extends 'base.html' %}
+{% load static %}
 
+{% block title %}SokoGuides | Guide Creation{% endblock %}
+
+{% block content %}
+
+<div class="post-container">
+    {% if user.is_authenticated %}
         <!-- Guide Creation Form -->
         <div class="feed-container">
             <h2>Guide Creation</h2>
-            <form method="POST" action="{{ url_for('guides.create_guide') }}" enctype="multipart/form-data" id="guideForm">
+            <form method="POST" action="{% url 'create_guide' %}" enctype="multipart/form-data" id="guideForm">
+                {% csrf_token %}
                 
+                <!-- Game Selection -->
+                <div class="form-group">
+                    <label for="game">Game:</label>
+                    <select name="game" id="game" required>
+                        <option value="">Select a game</option>
+                        {% for game in games %}  <!-- Changed from 'g in game' to 'game in games' -->
+                            <option value="{{ game.game_id }}">{{ game.game_name }}</option>
+                        {% empty %}
+                            <option value="">No games available</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Guide Level -->
+                <div class="form-group">
+                    <label for="guide_level">Level Number:</label>
+                    <input type="number" name="guide_level" id="guide_level" required min="1" placeholder="Enter level number">
+                </div>
+
                 <!-- Guide Title -->
                 <div class="form-group">
                     <label for="title">Guide Title:</label>
                     <input type="text" name="title" id="title" required maxlength="100" placeholder="Enter guide title">
                 </div>
 
-                <!-- Spatial Movements -->
+                <!-- Guide Content -->
                 <div class="form-group">
-                    <label for="spatial">Spatial Movements:</label>
-                    <textarea name="spatial" id="spatial" rows="4" placeholder="Describe spatial movements"></textarea>
+                    <label for="guide_text">Guide Content:</label>
+                    <textarea name="guide_text" id="guide_text" rows="4" required placeholder="Write your guide content here eg LEFT,UP,RIGHT,LEFT,DOWN,DOWN..."></textarea>
                 </div>
 
-                <!-- Description -->
+                <!-- Number of Moves -->
                 <div class="form-group">
-                    <label for="description">Description:</label>
-                    <textarea name="description" id="description" rows="4" placeholder="Enter description"></textarea>
+                    <label for="number_of_moves">Number of Moves:</label>
+                    <input type="number" name="number_of_moves" id="number_of_moves" required min="1" placeholder="Enter number of moves">
                 </div>
 
                 <!-- Image Upload -->
                 <div class="form-group">
-                    <label for="image">Images:</label>
-                    <input type="file" name="image" id="image" accept="image/*" multiple>
+                    <label for="images">Images:</label>
+                    <input type="file" name="images" id="images" accept="image/*" multiple>
                     <button type="button" onclick="insertAltText()">Insert alt text</button>
                 </div>
 
@@ -52,30 +65,40 @@
                         <button type="button" class="btn red" onclick="setColorDependency(false)">No</button>
                     </div>
                     <p class="note">Why do we need this? To accommodate users with color-blindness, we ask all guide creators to indicate whether color is necessary for the game.</p>
-                    <input type="hidden" name="color_dependency" id="color_dependency" value="No">
-                </div>
-
-                <!-- Tags -->
-                <div class="form-group">
-                    <label for="tags">Tags:</label>
-                    <input type="text" name="tags" id="tags" placeholder="Type here to search">
+                    <input type="hidden" name="colors_required" id="colors_required" value="False">
                 </div>
 
                 <!-- Submit Button -->
                 <button type="submit" class="btn btn-primary">Create Guide</button>
             </form>
         </div>
-    </div>
+    {% else %}
+        <div style="text-align: center; padding: 40px; background-color: #f8f8f8; border-radius: 8px;">
+            <h3>You need to be logged in to create a guide</h3>
+            <p>Please <a href="{% url 'sign_in' %}" style="color: #007BFF;">sign in</a> or <a href="{% url 'sign_up' %}" style="color: #007BFF;">create an account</a> to continue.</p>
+        </div>
+    {% endif %}
+</div>
 
-    <script>
-        function setColorDependency(value) {
-            document.getElementById('color_dependency').value = value ? 'Yes' : 'No';
+<script>
+    function setColorDependency(value) {
+        document.getElementById('colors_required').value = value;
+        // Update button states
+        const yesBtn = document.querySelector('.btn.green');
+        const noBtn = document.querySelector('.btn.red');
+        if (value) {
+            yesBtn.style.opacity = '1';
+            noBtn.style.opacity = '0.7';
+        } else {
+            yesBtn.style.opacity = '0.7';
+            noBtn.style.opacity = '1';
         }
+    }
 
-        function insertAltText() {
-            alert("Not yet!");
-        }
-    </script>
+    function insertAltText() {
+        alert("Alt text functionality will be added soon!");
+    }
+</script>
 
 <style>
     body {
@@ -110,7 +133,11 @@
         margin-bottom: 5px; 
     }
 
-    input[type="text"], textarea, input[type="file"] { 
+    input[type="text"], 
+    textarea, 
+    select,
+    input[type="number"],
+    input[type="file"] { 
         width: 100%; 
         padding: 8px; 
         box-sizing: border-box; 
@@ -152,6 +179,5 @@
         margin-top: 5px; 
     }
 </style>
-    <!-- {% endblock %} -->
-</body>
-</html>
+
+{% endblock %}
