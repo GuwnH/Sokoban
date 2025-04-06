@@ -1,1 +1,1 @@
-gunicorn sokoban_backend.wsgi --workers=2
+web: gunicorn sokoban_backend.wsgi --workers=2
