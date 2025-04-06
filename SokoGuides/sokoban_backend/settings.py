@@ -77,15 +77,18 @@ WSGI_APPLICATION = 'sokoban_backend.wsgi.application'
 
 if os.getenv('RAILWAY_ENVIRONMENT', ''):  # or 'ON_RAILWAY' if you prefer
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',  # Railway's default
-            'NAME': os.getenv('PGDATABASE'),
-            'USER': os.getenv('PGUSER'),
-            'PASSWORD': os.getenv('PGPASSWORD'),
-            'HOST': os.getenv('PGHOST'),
-            'PORT': os.getenv('PGPORT'),
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.getenv('MYSQLDATABASE'),
+        'USER': os.getenv('MYSQLUSER'),
+        'PASSWORD': os.getenv('MYSQLPASSWORD'),
+        'HOST': os.getenv('MYSQLHOST'),
+        'PORT': os.getenv('MYSQLPORT'),
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         }
     }
+}
 else:
     DATABASES = {
         'default': {
