@@ -75,18 +75,15 @@ WSGI_APPLICATION = 'sokoban_backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-if 'pythonanywhere' in os.environ.get('PYTHONANYWHERE_DOMAIN', ''):
+if os.getenv('RAILWAY_ENVIRONMENT', ''):  # or 'ON_RAILWAY' if you prefer
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': os.getenv('DB_NAME', 'hguwn25$sokoguides2'),  # Format: username$dbname
-            'USER': os.getenv('DB_USER', 'hguwn25'),  # Your PA username
-            'PASSWORD': os.getenv('DB_PASSWORD', 'Bobsloblobtob00!'),  # Set in PA Databases tab
-            'HOST': os.getenv('DB_HOST', 'hguwn25.mysql.pythonanywhere-services.com'),
-            'PORT': '3306',
-            'OPTIONS': {
-                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-            }
+            'ENGINE': 'django.db.backends.postgresql',  # Railway's default
+            'NAME': os.getenv('PGDATABASE'),
+            'USER': os.getenv('PGUSER'),
+            'PASSWORD': os.getenv('PGPASSWORD'),
+            'HOST': os.getenv('PGHOST'),
+            'PORT': os.getenv('PGPORT'),
         }
     }
 else:
