@@ -77,16 +77,32 @@ WSGI_APPLICATION = 'sokoban_backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# Database configuration
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('PGDATABASE', 'mydatabase'),  # Fallback to 'mydatabase' if not set
-        'USER': os.getenv('PGUSER', 'postgres'),
-        'PASSWORD': os.getenv('PGPASSWORD', 'postgres'),
-        'HOST': os.getenv('PGHOST', 'localhost'),
-        'PORT': os.getenv('PGPORT', '5432'),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',  # Fallback to SQLite
     }
 }
+
+# Try DATABASE_URL first (Railway's default)
+db_url = os.getenv('DATABASE_URL')
+if db_url:
+    DATABASES['default'] = dj_database_url.parse(db_url, conn_max_age=600, ssl_require=True)
+else:
+    # Fallback to PostgreSQL if Railway provides PG* vars
+    try:
+        DATABASES['default'] = {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('PGDATABASE', 'railway'),  # Railway's default
+            'USER': os.getenv('PGUSER', 'postgres'),
+            'PASSWORD': os.getenv('PGPASSWORD', ''),
+            'HOST': os.getenv('PGHOST', 'localhost'),
+            'PORT': os.getenv('PGPORT', '5432'),
+        }
+    except Exception as e:
+        print(f"Database config error: {e}")
+        # Keep SQLite as final fallback
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
