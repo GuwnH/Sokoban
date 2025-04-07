@@ -78,12 +78,20 @@ WSGI_APPLICATION = 'sokoban_backend.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default='postgresql://localhost',  # Fallback for local dev
-        conn_max_age=600,
-        ssl_require=os.getenv('DB_SSL', 'False') == 'True'
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
 }
+
+# Override with Railway's PostgreSQL if DATABASE_URL exists
+if 'DATABASE_URL' in os.environ:
+    DATABASES['default'] = dj_database_url.config(
+        default=os.getenv('DATABASE_URL'),
+        conn_max_age=600,
+        ssl_require=True,
+        engine='django.db.backends.postgresql'  # Explicit engine
+    )
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
