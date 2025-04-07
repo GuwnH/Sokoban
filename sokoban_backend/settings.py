@@ -25,10 +25,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-w^@&qy!rc)pwmf$3an#i%x5wdp2lv4(1r%!8*g9u*$a+2&=6a#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1','sokoban-production.up.railway.app'] 
-CRSF_TRUSTED_ORIGINS = ['https://sokoban-production.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['https://sokoban-production.up.railway.app']
 
 # Application definition
 
@@ -84,13 +84,10 @@ DATABASES = {
     }
 }
 
-# Override with Railway's PostgreSQL if DATABASE_URL exists
 if 'DATABASE_URL' in os.environ:
     DATABASES['default'] = dj_database_url.config(
-        default=os.getenv('DATABASE_URL'),
         conn_max_age=600,
-        ssl_require=True,
-        engine='django.db.backends.postgresql'  # Explicit engine
+        ssl_require=True
     )
 
 # Password validation
@@ -127,7 +124,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / "guides" / "static"]  # Points to the static folder
+STATICFILES_DIRS = [BASE_DIR / "guides" / "static"]
+STATIC_ROOT = BASE_DIR / "staticfiles"  # For collectstatic
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
