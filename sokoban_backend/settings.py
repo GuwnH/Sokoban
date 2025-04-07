@@ -79,14 +79,14 @@ WSGI_APPLICATION = 'sokoban_backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('PGDATABASE', 'mydatabase'),  # Fallback to 'mydatabase' if not set
+        'USER': os.getenv('PGUSER', 'postgres'),
+        'PASSWORD': os.getenv('PGPASSWORD', 'postgres'),
+        'HOST': os.getenv('PGHOST', 'localhost'),
+        'PORT': os.getenv('PGPORT', '5432'),
     }
 }
-
-db_from_env = os.getenv('DATABASE_URL')
-if db_from_env:
-    DATABASES['default'] = dj_database_url.parse(db_from_env, conn_max_age=600, ssl_require=True)
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -133,3 +133,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGOUT_REDIRECT_URL = 'home'
 LOGIN_REDIRECT_URL = 'home'
+print("Environment variables:", {k: v for k, v in os.environ.items() if 'DATABASE' in k or 'POSTGRES' in k})
