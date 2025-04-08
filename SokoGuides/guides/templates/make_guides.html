@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
+
+{% load static %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +13,7 @@
     <div class="post-container">
         <div class="feed-container">
             <h2>Guide Creation</h2>
-            <form method="POST" action="{{ url_for('guides.create_guide') }}" enctype="multipart/form-data" id="guideForm">
+            <form method="POST" action="{% url 'create_guide' %}" enctype="multipart/form-data" id="guideForm">
                 
                 <!-- Guide Title -->
                 <div class="form-group">
@@ -73,7 +75,7 @@
 
 <style>
     body {
-        background-image: url('/SokoGuides/guides/static/img/background_image.jpg'); 
+        background-image: url("{% static 'img/background_image.jpg' %}");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -146,6 +148,6 @@
         margin-top: 5px; 
     }
 </style>
-    <!-- {% endblock %} -->
+    
 </body>
 </html>
