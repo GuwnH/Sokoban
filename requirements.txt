@@ -12,5 +12,4 @@ gunicorn==21.2.0  # Required for production
 psycopg2-binary==2.9.9
 dj-database-url==2.0.0
 psycopg2-binary
-whitenoise
-dj-database-url
+mysqlclient>=2.2.0
