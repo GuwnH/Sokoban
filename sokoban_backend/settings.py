@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-w^@&qy!rc)pwmf$3an#i%x5wdp2lv4(1r%!8*g9u*$a+2&=6a#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
+DEBUG = 'True'
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1','sokoban-production.up.railway.app'] 
 CSRF_TRUSTED_ORIGINS = ['https://sokoban-production.up.railway.app']
@@ -82,8 +82,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'sokoguides2',
         'USER': 'root',
-        'PASSWORD': 'Bobsloblobtob00!',
-        'HOST': '127.0.0.1',
+        'PASSWORD': 'iamachildofgod',
+        'HOST': 'localhost',
         'PORT': '3306',
     }
 }
