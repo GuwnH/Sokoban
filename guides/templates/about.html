@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}About - SokoGuides{% endblock %}
+
+{% block content %}
+{% load static %}
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <h1 class="text-center mb-4">About SokoGuides</h1>
+            
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2 class="card-title">What is Sokoban?</h2>
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <p class="card-text">
+                                Sokoban (倉庫番, meaning "warehouse keeper") is a classic puzzle game where players:
+                            </p>
+                            <ul>
+                                <li>Navigate a character through a maze-like warehouse</li>
+                                <li>Push boxes/crates to designated storage locations</li>
+                                <li>Use only cardinal directions (up, down, left, right)</li>
+                                <li>Plan carefully - boxes can't be pulled, only pushed</li>
+                                <li>Solve increasingly complex spatial puzzles</li>
+                            </ul>
+                            <p>First created in 1982, Sokoban has inspired countless variants and remains popular today for its simple mechanics but challenging puzzles.</p>
+                        </div>
+                        <div class="col-md-6">
+                            <img src="{% static 'images/sokoban-example.png' %}" alt="Sokoban gameplay example" class="img-fluid rounded">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2 class="card-title">What is SokoGuides?</h2>
+                    <p class="card-text">
+                        SokoGuides is a community-driven platform for Sokoban and Sokoban-like game enthusiasts that offers:
+                    </p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="feature-box p-3 mb-3 bg-light rounded">
+                                <h4><i class="fas fa-book-open me-2"></i>Comprehensive Guides</h4>
+                                <p>Step-by-step solutions and strategies for Sokoban puzzles of all difficulty levels.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="feature-box p-3 mb-3 bg-light rounded">
+                                <h4><i class="fas fa-users me-2"></i>Community Powered</h4>
+                                <p>Players create, share, and rate guides to help each other improve.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="feature-box p-3 mb-3 bg-light rounded">
+                                <h4><i class="fas fa-gamepad me-2"></i>Multi-Game Support</h4>
+                                <p>Resources for classic Sokoban and its many variants and clones.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="feature-box p-3 mb-3 bg-light rounded">
+                                <h4><i class="fas fa-star me-2"></i>Quality Control</h4>
+                                <p>Voting system ensures the best solutions rise to the top.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">Join Our Community</h2>
+                    <p>Whether you're a Sokoban beginner looking for help or an expert wanting to share your knowledge, SokoGuides is the perfect place to:</p>
+                    <ul>
+                        <li>Learn solving techniques from basic to advanced</li>
+                        <li>Contribute your own solutions and strategies</li>
+                        <li>Discover new Sokoban variants and challenges</li>
+                        <li>Connect with other puzzle enthusiasts</li>
+                    </ul>
+                    <div class="text-center mt-4">
+                        <a href="{% url 'register' %}" class="btn btn-primary btn-lg me-3">Sign Up Now</a>
+                        <a href="{% url 'guides' %}" class="btn btn-outline-primary btn-lg">Browse Guides</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
