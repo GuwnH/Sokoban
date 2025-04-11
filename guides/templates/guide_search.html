@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{% block title %}Guide Search - SokoGuides{% endblock %}
+
+{% block content %}
+
+{% load static %}
+
+<style>
+    /* Search Page Styles */
+    .search-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .search-form {
+        background-color: #f8f9fa;
+        padding: 25px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .search-form label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #495057;
+    }
+
+    .search-form input {
+        width: 100%;
+        padding: 10px 15px;
+        margin-bottom: 20px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        font-size: 16px;
+    }
+
+    .search-form button {
+        background-color: #5e72e4;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s;
+    }
+
+    .search-form button:hover {
+        background-color: #4a5acf;
+    }
+
+    .search-results {
+        margin-top: 30px;
+    }
+
+    .search-results h2 {
+        margin-bottom: 20px;
+        color: #32325d;
+    }
+
+    .search-results ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .search-results li {
+        padding: 15px;
+        margin-bottom: 10px;
+        background-color: white;
+        border-radius: 6px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        transition: transform 0.2s;
+    }
+
+    .search-results li:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .search-results a {
+        text-decoration: none;
+        color: #525f7f;
+        font-weight: 500;
+        display: block;
+    }
+
+    .search-results a:hover {
+        color: #5e72e4;
+    }
+
+    .no-results {
+        text-align: center;
+        padding: 30px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        color: #6c757d;
+    }
+</style>
+
+<div class="search-container">
+    <section class="search-form">
+        <h2>Search Guides</h2>
+        <form method="get" action="{% url 'search_guides' %}">
+            <label for="game_name">Game Name:</label>
+            <input type="text" id="game_name" name="game_name" placeholder="Enter game name" value="{{ game_name|default:'' }}">
+
+            <label for="guide_level">Guide Level:</label>
+            <input type="number" id="guide_level" name="guide_level" placeholder="Enter guide level" value="{{ guide_level|default:'' }}">
+
+            <label for="username">User Name:</label>
+            <input type="text" id="username" name="username" placeholder="Enter username" value="{{ username|default:'' }}">
+
+            <button type="submit">Search</button>
+        </form>
+    </section>
+
+    <section class="search-results">
+        <h2>Search Results</h2>
+        {% if guides %}
+            <ul>
+                {% for guide in guides %}
+                    <li>
+                        <a href="{% url 'guide_detail' guide_id=guide.guide_id %}">
+                            {{ guide.game.game_name }} - Level {{ guide.guide_level }} 
+                            (by {% if guide.user.userprofile.user_display %}
+                                    {{ guide.user.userprofile.user_display }}
+                                {% else %}
+                                    {{ guide.user.username }}
+                                {% endif %})
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <div class="no-results">
+                <p>No guides found matching your search criteria.</p>
+                <p>Try different search terms or <a href="{% url 'create_guide' %}">create a new guide</a>.</p>
+            </div>
+        {% endif %}
+    </section>
+</div>
+
+{% endblock %}

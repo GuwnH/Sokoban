@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}SokoGuides | Guide Creation{% endblock %}
+
+{% block content %}
+
+<div class="post-container">
+    {% if user.is_authenticated %}
+        <!-- Guide Creation Form -->
+        <div class="feed-container">
+            <h2>Guide Creation</h2>
+            <form method="POST" action="{% url 'create_guide' %}" enctype="multipart/form-data" id="guideForm">
+                {% csrf_token %}
+                
+                <!-- Game Selection -->
+                <div class="form-group">
+                    <label for="game">Game:</label>
+                    <select name="game" id="game" required>
+                        <option value="">Select a game</option>
+                        {% for game in games %}  <!-- Changed from 'g in game' to 'game in games' -->
+                            <option value="{{ game.game_id }}">{{ game.game_name }}</option>
+                        {% empty %}
+                            <option value="">No games available</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Guide Level -->
+                <div class="form-group">
+                    <label for="guide_level">Level Number:</label>
+                    <input type="number" name="guide_level" id="guide_level" required min="1" placeholder="Enter level number">
+                </div>
+
+                <!-- Guide Title -->
+                <div class="form-group">
+                    <label for="title">Guide Title:</label>
+                    <input type="text" name="title" id="title" required maxlength="100" placeholder="Enter guide title">
+                </div>
+
+                <!-- Guide Content -->
+                <div class="form-group">
+                    <label for="guide_text">Guide Content:</label>
+                    <textarea name="guide_text" id="guide_text" rows="4" required placeholder="Write your guide content here eg LEFT,UP,RIGHT,LEFT,DOWN,DOWN..."></textarea>
+                </div>
+
+                <!-- Number of Moves -->
+                <div class="form-group">
+                    <label for="number_of_moves">Number of Moves:</label>
+                    <input type="number" name="number_of_moves" id="number_of_moves" required min="1" placeholder="Enter number of moves">
+                </div>
+
+                <!-- Image Upload -->
+                <div class="form-group">
+                    <label for="images">Images:</label>
+                    <input type="file" name="images" id="images" accept="image/*" multiple>
+                    <button type="button" onclick="insertAltText()">Insert alt text</button>
+                </div>
+
+                <!-- Color Dependency -->
+                <div class="form-group">
+                    <label>Color Dependency:</label>
+                    <div class="color-buttons">
+                        <button type="button" class="btn green" onclick="setColorDependency(true)">Yes</button>
+                        <button type="button" class="btn red" onclick="setColorDependency(false)">No</button>
+                    </div>
+                    <p class="note">Why do we need this? To accommodate users with color-blindness, we ask all guide creators to indicate whether color is necessary for the game.</p>
+                    <input type="hidden" name="colors_required" id="colors_required" value="False">
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary">Create Guide</button>
+            </form>
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 40px; background-color: #f8f8f8; border-radius: 8px;">
+            <h3>You need to be logged in to create a guide</h3>
+            <p>Please <a href="{% url 'sign_in' %}" style="color: #007BFF;">sign in</a> or <a href="{% url 'sign_up' %}" style="color: #007BFF;">create an account</a> to continue.</p>
+        </div>
+    {% endif %}
+</div>
+
+<script>
+    function setColorDependency(value) {
+        document.getElementById('colors_required').value = value;
+        // Update button states
+        const yesBtn = document.querySelector('.btn.green');
+        const noBtn = document.querySelector('.btn.red');
+        if (value) {
+            yesBtn.style.opacity = '1';
+            noBtn.style.opacity = '0.7';
+        } else {
+            yesBtn.style.opacity = '0.7';
+            noBtn.style.opacity = '1';
+        }
+    }
+
+    function insertAltText() {
+        alert("Alt text functionality will be added soon!");
+    }
+</script>
+
+<style>
+    body {
+        background-image: url("{% static 'img/background_image.jpg' %}");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    .post-container { 
+        width: 80%; 
+        margin: auto; 
+        font-family: Arial, sans-serif; 
+        background-color: rgba(255, 255, 255, 0.9); 
+        padding: 20px; 
+        border-radius: 8px; 
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+        margin-top: 50px;
+    }
+
+    .form-group { 
+        margin-bottom: 15px; 
+    }
+
+    label { 
+        display: block; 
+        font-weight: bold; 
+        margin-bottom: 5px; 
+    }
+
+    input[type="text"], 
+    textarea, 
+    select,
+    input[type="number"],
+    input[type="file"] { 
+        width: 100%; 
+        padding: 8px; 
+        box-sizing: border-box; 
+        border: 1px solid #ccc; 
+        border-radius: 4px; 
+    }
+
+    .btn { 
+        padding: 8px 12px; 
+        cursor: pointer; 
+        border: none; 
+        border-radius: 4px; 
+    }
+
+    .btn.green { 
+        background-color: #4CAF50; 
+        color: white; 
+    }
+
+    .btn.red { 
+        background-color: #f44336; 
+        color: white; 
+    }
+
+    .btn.btn-primary { 
+        background-color: #007BFF; 
+        color: white; 
+    }
+
+    .color-buttons { 
+        display: flex; 
+        gap: 10px; 
+        margin-top: 5px; 
+    }
+
+    .note { 
+        font-size: 0.9em; 
+        color: #555; 
+        margin-top: 5px; 
+    }
+</style>
+<<<<<<< HEAD:guides/templates/make_guides.html
+
+{% endblock %}
+=======
+    
+</body>
+</html>
+>>>>>>> main:SokoGuides/guides/templates/make_guides.html

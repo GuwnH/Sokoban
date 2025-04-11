@@ -1,0 +1,1 @@
+web: gunicorn SokoGuides.sokoban_backend.wsgi --workers=2

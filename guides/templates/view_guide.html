@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Guide View - SokoGuides{% endblock %}
+
+{% block content %}
+
+{% load static %}
+
+<a href="{% url 'guide_detail' guide_id=guide.guide_id %}">{{ guide.title }}</a>
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<h1>{{ guide.game.game_name }} - Level {{ guide.guide_level }}</h1>
+<main>
+    <section class="guide">
+        <h2>Guide by 
+            {% if guide.user.userprofile.user_display %}
+                {{ guide.user.userprofile.user_display }}
+            {% else %}
+                {{ guide.user.username }}
+            {% endif %}
+        </h2>
+        <p><strong>Game:</strong> {{ guide.game.game_name }}</p>
+        <p><strong>Level:</strong> {{ guide.guide_level }}</p>
+        <p><strong>Moves:</strong> {{ guide.number_of_moves }}</p>
+        <p><strong>Colors Required:</strong> {{ guide.colors_required|yesno:"Yes,No" }}</p>
+        <p><strong>Guide:</strong>{{ guide.guide_text|linebreaks }}</p>
+    </section>
+
+    <section class="images">
+        <h3>Images</h3>
+        {% for image in images %}
+            <img src="{{ image.url }}" alt="Guide Image" style="max-width: 100%; height: auto;">
+        {% empty %}
+            <p>No images available for this guide.</p>
+        {% endfor %}
+    </section>
+</main>
+
+{% endblock %}

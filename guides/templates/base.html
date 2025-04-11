@@ -18,10 +18,22 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="{}">Guides</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{}">Games</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{}">About</a></li>
-                </ul>
+                    {% if user.is_authenticated %}
+                      <!-- Show when logged in -->
+                      <li class="nav-item">
+                        <a class="nav-link" href="{% url 'profile_detail' user.id %}">Profile</a>
+                      </li>
+                      <li class="nav-item"><a class="nav-link" href="{% url 'search_guides'%}">Guides</a></li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="{% url 'sign_out' %}">Sign Out</a>
+                      </li>
+                    {% else %}
+                      <!-- Show when logged out -->
+                      <li class="nav-item"><a class="nav-link" href="{% url 'search_guides' %}">Guides</a></li>
+                      <li class="nav-item"><a class="nav-link" href="{% url 'sign_up' %}">Sign Up</a></li>
+                      <li class="nav-item"><a class="nav-link" href="{% url 'sign_in' %}">Sign In</a></li>
+                    {% endif %}
+                  </ul>
             </div>
         </div>
     </nav>
