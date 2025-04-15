@@ -1,1 +1,1 @@
-web: gunicorn SokoGuides.sokoban_backend.wsgi --workers=2
+web: gunicorn "app:create_app()"
