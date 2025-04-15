@@ -34,10 +34,10 @@ RUN python manage.py collectstatic --noinput --clear
 EXPOSE 8000
 EXPOSE 3306
 
-# Setup entrypoint
-COPY docker-entrypoint.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
-ENTRYPOINT ["docker-entrypoint.sh"]
+# # Setup entrypoint
+# COPY docker-entrypoint.sh /usr/local/bin/
+# RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+# ENTRYPOINT ["docker-entrypoint.sh"]
 
 # Run application
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "4", "sokoban_backend.wsgi"]
