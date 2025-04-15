@@ -1,16 +1,6 @@
 services:
   - type: web
-    name: sokoban-django
-    runtime: python
-    buildCommand: |
-      pip install -r requirements.txt
-      python Sokoban/SokoGuides/manage.py collectstatic --noinput
-    startCommand: |
-      cd Sokoban/SokoGuides &&
-      python manage.py migrate &&
-      gunicorn sokoban_backend.wsgi --workers=2
-    envVars:
-      - key: DJANGO_SETTINGS_MODULE
-        value: sokoban_backend.settings
-      - key: PYTHONPATH
-        value: /opt/render/project/src/Sokoban/SokoGuides
+    name: sokoban
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn sokoban_backend.wsgi:application
