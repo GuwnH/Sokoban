@@ -1,6 +1,0 @@
-services:
-  - type: web
-    name: sokoban
-    env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn sokoban_backend.wsgi:application
