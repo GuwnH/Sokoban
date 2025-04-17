@@ -25,7 +25,7 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', cast=bool)
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'soko-guides-b4e5960bf015.herokuapp.com'] 
-CSRF_TRUSTED_ORIGINS = ['https://sokoban-production.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['https://soko-guides-b4e5960bf015.herokuapp.com']
 
 # Application definition
 
