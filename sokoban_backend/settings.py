@@ -116,7 +116,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / "guides" / "static"]
-STATIC_ROOT = BASE_DIR / "staticfiles"  # For collectstatic
+STATIC_ROOT = BASE_DIR / "staticfiles" 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
