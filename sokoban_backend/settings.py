@@ -72,7 +72,7 @@ WSGI_APPLICATION = 'sokoban_backend.wsgi.application'
 
 
 # Database configuration
-DATABASE_URL = config('DATABASE_URL', default=None)
+DATABASE_URL = config('JAWSDB_URL', default=None)
 
 if DATABASE_URL:
     DATABASES = {
