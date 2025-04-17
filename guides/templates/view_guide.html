@@ -7,7 +7,7 @@
 {% load static %}
 
 <a href="{% url 'guide_detail' guide_id=guide.guide_id %}">{{ guide.title }}</a>
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="{% static 'css/argon-dashboard.css' %}">
 
 <h1>{{ guide.game.game_name }} - Level {{ guide.guide_level }}</h1>
 <main>
