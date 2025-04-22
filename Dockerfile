@@ -4,14 +4,16 @@ FROM python:3.12-slim-bookworm
 # Set environment variables
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
-    DJANGO_SETTINGS_MODULE=sokoban_backend.settings \
+    DJANGO_SETTINGS_MODULE=sokoban_backend.settings
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     libmariadb-dev-compat \
     libmariadb-dev \
-    mysql-client \
+    default-mysql-client \
+    pkg-config \
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 # Create and set work directory
@@ -30,11 +32,6 @@ RUN python manage.py collectstatic --noinput --clear
 # Expose ports
 EXPOSE 8000
 EXPOSE 3306
-
-# Setup entrypoint
-COPY docker-entrypoint.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
-ENTRYPOINT ["docker-entrypoint.sh"]
 
 # Run application
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "4", "sokoban_backend.wsgi"]
