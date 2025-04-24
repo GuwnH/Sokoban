@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+{% block title %}About - SokoGuides{% endblock %}
+
+{% block content %}
+{% load static %}
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <h1 class="text-center mb-4">About SokoGuides</h1>
+            
+            <!-- Sokoban Gameplay Visual Demo -->
+            <!-- Sokoban Gameplay Visual Demo -->
+        <div class="card mb-4 border-0 shadow-sm">
+            <div class="card-body p-0">
+                <!-- Changed ratio to be more square and adjusted object-fit -->
+                <div class="ratio" style="--bs-aspect-ratio: 75%;">
+                    <img src="{% static 'img/sokoban_demo.gif' %}" 
+                        alt="Sokoban gameplay animation" 
+                        class="img-fluid rounded-top"
+                        style="object-fit: contain; background-color: #f8f9fa;">
+                </div>
+                <div class="p-4">
+                    <p class="text-muted text-center mb-0">
+                        <small>Example of Sokoban gameplay - pushing boxes to target locations</small>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+            <!-- What is Sokoban Section -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2 class="card-title">What is Sokoban?</h2>
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <p class="card-text">
+                                Sokoban (倉庫番, meaning "warehouse keeper") is a classic puzzle game where players:
+                            </p>
+                            <ul>
+                                <li>Navigate a warehouse worker through maze-like levels</li>
+                                <li>Push boxes to marked storage locations</li>
+                                <li>Can only move in four directions (up, down, left, right)</li>
+                                <li>Must plan carefully - boxes can't be pulled, only pushed</li>
+                                <li>Solve increasingly complex spatial puzzles</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 bg-light rounded">
+                                <h5>Key Features:</h5>
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fas fa-arrows-alt me-3 fa-lg text-primary"></i>
+                                    <span>Simple controls but deep puzzles</span>
+                                </div>
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fas fa-cubes me-3 fa-lg text-primary"></i>
+                                    <span>Over 300 original levels in classic version</span>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-brain me-3 fa-lg text-primary"></i>
+                                    <span>Develops logical thinking and planning skills</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- What is SokoGuides Section -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2 class="card-title">What is SokoGuides?</h2>
+                    <p class="lead">
+                        The ultimate community platform for Sokoban and Sokoban-like games for players of all skill levels
+                    </p>
+                    
+                    <div class="row g-3 mt-3">
+                        <div class="col-md-6">
+                            <div class="h-100 p-4 bg-light rounded">
+                                <h4><i class="fas fa-video me-2 text-primary"></i> Visual Guides</h4>
+                                <p>Solutions and step-by-step walkthroughs for tricky levels.</p>
+                                <div class="text-center mt-2">
+                                    <img src="{% static 'images/guide-preview.gif' %}" 
+                                         alt="Guide example" 
+                                         class="img-fluid rounded border"
+                                         style="max-height: 120px;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="h-100 p-4 bg-light rounded">
+                                <h4><i class="fas fa-puzzle-piece me-2 text-primary"></i> Variant Support</h4>
+                                <p>Resources for classic Sokoban and other similar game variants like:</p>
+                                <ul class="list-unstyled">
+                                    <li>- Sokoban Revenge</li>
+                                    <li>- Microban</li>
+                                    <li>- XSokoban</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Join Section -->
+            <div class="text-center py-4 bg-primary bg-opacity-10 rounded">
+                <h2>Ready to Master Sokoban?</h2>
+                <p class="lead mb-4">Join our growing community of puzzle enthusiasts</p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="{% url 'sign_up' %}" class="btn btn-primary px-4 py-2">
+                        <i class="fas fa-user-plus me-2"></i>Sign Up Free
+                    </a>
+                    <a href="{% url 'search_guides' %}" class="btn btn-outline-primary px-4 py-2">
+                        <i class="fas fa-book-open me-2"></i>Browse Guides
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .feature-box {
+        transition: transform 0.2s;
+    }
+    .feature-box:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+</style>
+{% endblock %}

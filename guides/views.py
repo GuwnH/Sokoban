@@ -116,6 +116,12 @@ def custom_logout(request):
     logout(request)
     return redirect('home')  # Or your preferred page
 
+def about(request):
+    return render(request, 'about.html')
+
+def games(request):
+    return render(request, 'games.html')
+
 # API Views
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()

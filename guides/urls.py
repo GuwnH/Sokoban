@@ -1,7 +1,8 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import home, signin, signup, create_guide, guide_detail, profile_detail, search_guides, custom_logout, UserViewSet, GameViewSet, GuideViewSet
+from .views import home, signin, signup, create_guide, guide_detail, profile_detail, search_guides, custom_logout, about, games, UserViewSet, GameViewSet, GuideViewSet
 from django.contrib.auth import views as auth_views
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 # API router for DRF
 router = DefaultRouter()
@@ -19,4 +20,6 @@ urlpatterns = [
     path('search/', search_guides, name='search_guides'),
     path('sign-in/', auth_views.LoginView.as_view(template_name='sign-in.html'), name='sign_in'),
     path('sign-out/', custom_logout, name='sign_out'),
-]
+    path('about/', about, name='about'),  
+    path('games/', games, name='games'), 
+] + staticfiles_urlpatterns()

@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+
+{% block title %}Game Library - SokoGuides{% endblock %}
+
+{% block content %}
+{% load static %}
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            <h1 class="text-center mb-4">Sokoban Game Library</h1>
+            <p class="lead text-center mb-5">
+                Browse our collection of Sokoban games and variants. Help us grow by suggesting new games!
+            </p>
+
+            <!-- Game Grid Section -->
+            <div class="mb-5">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2>Available Games</h2>
+                    <div>
+                        <span class="badge bg-primary me-2">{{ game_count }} Games</span>
+                        <span class="badge bg-success">{{ total_levels }} Levels</span>
+                    </div>
+                </div>
+
+                {% if games %}
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                    {% for game in games %}
+                    <div class="col">
+                        <div class="card h-100 shadow-sm game-card">
+                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 180px;">
+                                <i class="fas fa-gamepad fa-4x text-muted"></i>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ game.game_name }}</h5>
+                                <div class="d-flex align-items-center mb-2">
+                                    <span class="badge bg-secondary me-2">
+                                        {{ game.number_levels }} level{{ game.number_levels|pluralize }}
+                                    </span>
+                                    {% if game.additional_inputs %}
+                                    <span class="badge bg-warning text-dark">Advanced Controls</span>
+                                    {% endif %}
+                                </div>
+                                <div class="mb-2">
+                                    <span class="text-warning">
+                                        {% with ''|center:game.weighted_ratings as range %}
+                                        {% for _ in range %}★{% endfor %}
+                                        {% endwith %}
+                                    </span>
+                                    <span class="text-muted">
+                                        {% with ''|center:game.get_remaining_stars as range %}
+                                        {% for _ in range %}★{% endfor %}
+                                        {% endwith %}
+                                    </span>
+                                    <span class="ms-1 small text-muted">{{ game.weighted_ratings }}</span>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-transparent">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">
+                                        {% with guide_count=game.guide_set.count %}
+                                        {{ guide_count }} guide{{ guide_count|pluralize }}
+                                        {% endwith %}
+                                    </small>
+                                    <a href="{% url 'game_guides' game.game_id %}" class="btn btn-sm btn-outline-primary">
+                                        View Guides
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="alert alert-info text-center">
+                    No games in our database yet. Be the first to suggest one!
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Game Suggestion Section -->
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Suggest a New Game</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="{% url 'suggest_game' %}">
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="game_name" class="form-label">Game Name*</label>
+                                <input type="text" class="form-control" id="game_name" name="game_name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="number_levels" class="form-label">Number of Levels</label>
+                                <input type="number" class="form-control" id="number_levels" name="number_levels" min="1">
+                            </div>
+                            <div class="col-12">
+                                <label for="game_description" class="form-label">Description</label>
+                                <textarea class="form-control" id="game_description" name="game_description" rows="2"></textarea>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Game Features</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="additional_inputs" name="additional_inputs">
+                                    <label class="form-check-label" for="additional_inputs">
+                                        Advanced Controls
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="platform" class="form-label">Platform</label>
+                                <select class="form-select" id="platform" name="platform">
+                                    <option value="PC">PC</option>
+                                    <option value="Mobile">Mobile</option>
+                                    <option value="Web">Web</option>
+                                    <option value="Multiplatform">Multiplatform</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="website" class="form-label">Website URL</label>
+                                <input type="url" class="form-control" id="website" name="website" placeholder="https://">
+                            </div>
+                            {% if not user.is_authenticated %}
+                            <div class="col-md-6">
+                                <label for="suggester_name" class="form-label">Your Name</label>
+                                <input type="text" class="form-control" id="suggester_name" name="suggester_name">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="suggester_email" class="form-label">Your Email</label>
+                                <input type="email" class="form-control" id="suggester_email" name="suggester_email">
+                            </div>
+                            {% endif %}
+                            <div class="col-12 mt-3">
+                                <button type="submit" class="btn btn-primary px-4">
+                                    <i class="fas fa-plus-circle me-2"></i>Submit Suggestion
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .game-card {
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .game-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    .card-img-top {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid rgba(0,0,0,0.125);
+    }
+</style>
+{% endblock %}

@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-
 # class User(models.Model):
 #     user_id = models.AutoField(primary_key=True)
 #     user_name = models.CharField(max_length=30)
