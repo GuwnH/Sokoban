@@ -3,27 +3,72 @@
 {% block title %}Guide View - SokoGuides{% endblock %}
 
 {% block content %}
-
 {% load static %}
 
+<style>
+    .tts-controls {
+        background-color: #f8f9fa;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
+    .tts-btn {
+        margin-right: 10px;
+    }
+    .highlight {
+        background-color: #fffde7;
+        transition: background-color 0.3s;
+    }
+    .speakable-section {
+        margin-bottom: 15px;
+    }
+</style>
+
+<!-- Text-to-Speech Controls -->
+<div class="tts-controls">
+    <button id="readGuide" class="btn btn-primary tts-btn">
+        <i class="fas fa-play"></i> Read Guide
+    </button>
+    <button id="pauseGuide" class="btn btn-warning tts-btn" disabled>
+        <i class="fas fa-pause"></i> Pause
+    </button>
+    <button id="stopGuide" class="btn btn-danger tts-btn" disabled>
+        <i class="fas fa-stop"></i> Stop
+    </button>
+    <div class="form-group mt-2">
+        <label for="voiceSelect">Voice:</label>
+        <select id="voiceSelect" class="form-control"></select>
+    </div>
+    <div class="form-group">
+        <label for="rateControl">Speed:</label>
+        <input type="range" id="rateControl" min="0.5" max="2" step="0.1" value="1" class="form-range">
+    </div>
+</div>
+
+<!-- Your existing content -->
 <a href="{% url 'guide_detail' guide_id=guide.guide_id %}">{{ guide.title }}</a>
 <link rel="stylesheet" href="{% static 'css/argon-dashboard.css' %}">
 
-<h1>{{ guide.game.game_name }} - Level {{ guide.guide_level }}</h1>
+<h1 id="guide-title">{{ guide.game.game_name }} - Level {{ guide.guide_level }}</h1>
 <main>
     <section class="guide">
-        <h2>Guide by 
+        <h2 id="author">Guide by 
             {% if guide.user.userprofile.user_display %}
                 {{ guide.user.userprofile.user_display }}
             {% else %}
                 {{ guide.user.username }}
             {% endif %}
         </h2>
-        <p><strong>Game:</strong> {{ guide.game.game_name }}</p>
-        <p><strong>Level:</strong> {{ guide.guide_level }}</p>
-        <p><strong>Moves:</strong> {{ guide.number_of_moves }}</p>
-        <p><strong>Colors Required:</strong> {{ guide.colors_required|yesno:"Yes,No" }}</p>
-        <p><strong>Guide:</strong>{{ guide.guide_text|linebreaks }}</p>
+        <div class="speakable-section">
+            <p class="tts-content"><strong>Game:</strong> {{ guide.game.game_name }}</p>
+            <p class="tts-content"><strong>Level:</strong> {{ guide.guide_level }}</p>
+            <p class="tts-content"><strong>Moves:</strong> {{ guide.number_of_moves }}</p>
+            <p class="tts-content"><strong>Colors Required:</strong> {{ guide.colors_required|yesno:"Yes,No" }}</p>
+            <div class="tts-content">
+                <strong>Guide:</strong>
+                {{ guide.guide_text|linebreaks }}
+            </div>
+        </div>        
     </section>
 
     <section class="images">
@@ -35,5 +80,104 @@
         {% endfor %}
     </section>
 </main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Get DOM elements
+    const readBtn = document.getElementById('readGuide');
+    const pauseBtn = document.getElementById('pauseGuide');
+    const stopBtn = document.getElementById('stopGuide');
+    const voiceSelect = document.getElementById('voiceSelect');
+    const rateControl = document.getElementById('rateControl');
+    
+    // Speech synthesis setup
+    const synth = window.speechSynthesis;
+    let utterance = null;
+    let voices = [];
+    
+    // Function to get all text to be read
+    function getFullGuideText() {
+        const sections = [
+            document.getElementById('guide-title').textContent,
+            document.getElementById('author').textContent,
+            ...Array.from(document.querySelectorAll('.tts-content')).map(el => el.textContent)
+        ];
+        return sections.join('. '); // Join with periods for better speech pauses
+    }
+    
+    // Populate voice options
+    function populateVoices() {
+        voices = synth.getVoices();
+        voiceSelect.innerHTML = '';
+        voices.forEach(voice => {
+            const option = document.createElement('option');
+            option.textContent = `${voice.name} (${voice.lang})`;
+            option.setAttribute('data-voice', voice.name);
+            voiceSelect.appendChild(option);
+        });
+    }
+    
+    // Initialize voices
+    populateVoices();
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+        speechSynthesis.onvoiceschanged = populateVoices;
+    }
+    
+    // Read the guide
+    readBtn.addEventListener('click', () => {
+        if (synth.speaking && synth.paused) {
+            synth.resume();
+            readBtn.disabled = true;
+            pauseBtn.disabled = false;
+            stopBtn.disabled = false;
+            return;
+        }
+        
+        if (synth.speaking) {
+            synth.cancel();
+        }
+        
+        const text = getFullGuideText();
+        utterance = new SpeechSynthesisUtterance(text);
+        
+        // Set selected voice
+        const selectedVoice = voiceSelect.selectedOptions[0]?.getAttribute('data-voice');
+        if (selectedVoice) {
+            utterance.voice = voices.find(voice => voice.name === selectedVoice);
+        }
+        
+        // Set rate
+        utterance.rate = parseFloat(rateControl.value);
+        
+        utterance.onend = () => {
+            readBtn.disabled = false;
+            pauseBtn.disabled = true;
+            stopBtn.disabled = true;
+        };
+        
+        synth.speak(utterance);
+        readBtn.disabled = true;
+        pauseBtn.disabled = false;
+        stopBtn.disabled = false;
+    });
+    
+    // Pause the reading
+    pauseBtn.addEventListener('click', () => {
+        if (synth.speaking && !synth.paused) {
+            synth.pause();
+            pauseBtn.disabled = true;
+            readBtn.disabled = false;
+        }
+    });
+    
+    // Stop the reading
+    stopBtn.addEventListener('click', () => {
+        synth.cancel();
+        readBtn.disabled = false;
+        pauseBtn.disabled = true;
+        stopBtn.disabled = true;
+    });
+});
+</script>
 
 {% endblock %}
