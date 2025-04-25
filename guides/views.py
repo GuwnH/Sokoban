@@ -11,10 +11,31 @@ from django.contrib import messages
 from rest_framework.permissions import IsAdminUser
 from django.contrib.auth import logout
 from django.shortcuts import redirect
+from django.utils import timezone
+import random
 
-# Static page views
 def home(request):
-    return render(request, 'home.html')
+    # Get today's date for consistent daily feature
+    today = timezone.now().date()
+    
+    # Seed random with today's date for consistent daily selection
+    random.seed(today.toordinal())
+    
+    try:
+        # Get all approved guides
+        approved_guides = Guide.objects.all()
+        
+        # Select a random featured guide for today
+        featured_level = random.choice(approved_guides) if approved_guides.exists() else None
+        
+    except Exception as e:
+        featured_level = None
+    
+    context = {
+        'featured_level': featured_level,
+        'today': today,
+    }
+    return render(request, 'home.html', context)
 
 def signin(request):
     if request.method == 'POST':
@@ -121,6 +142,26 @@ def about(request):
 
 def games(request):
     return render(request, 'games.html')
+
+def games(request):
+    games = Game.objects.all()
+    return render(request, 'games.html', {'games': games})
+
+@login_required
+def suggest_game(request):
+    if request.method == 'POST':
+        game_name = request.POST['game_name']
+        number_levels = int(request.POST['number_levels'])
+        additional_inputs = request.POST['additional_inputs'] == 'True'
+        
+        # Instead of saving directly, you could save to a separate "suggested games" model or notify an admin.
+        Game.objects.create(
+            game_name=game_name,
+            number_levels=number_levels,
+            weighted_ratings=0.00,
+            additional_inputs=additional_inputs
+        )
+        return redirect('games')
 
 # API Views
 class UserViewSet(viewsets.ModelViewSet):

@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import home, signin, signup, create_guide, guide_detail, profile_detail, search_guides, custom_logout, about, games, UserViewSet, GameViewSet, GuideViewSet
+from .views import home, signin, signup, create_guide, guide_detail, profile_detail, search_guides, custom_logout, about, games, suggest_game, UserViewSet, GameViewSet, GuideViewSet
 from django.contrib.auth import views as auth_views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
@@ -21,5 +21,6 @@ urlpatterns = [
     path('sign-in/', auth_views.LoginView.as_view(template_name='sign-in.html'), name='sign_in'),
     path('sign-out/', custom_logout, name='sign_out'),
     path('about/', about, name='about'),  
-    path('games/', games, name='games'), 
+    path('games/', games, name='games'),
+    path('suggest-game/', suggest_game, name='suggest_game'),
 ] + staticfiles_urlpatterns()

@@ -21,6 +21,9 @@
                   <li class="nav-item">
                     <a class="nav-link" href="{% url 'about' %}">About</a>
                 </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'games' %}">Games</a>
+                </li>
                     {% if user.is_authenticated %}
                       <!-- Show when logged in -->
                       <li class="nav-item">
@@ -32,7 +35,6 @@
                       </li>
                     {% else %}
                       <!-- Show when logged out -->
-                      <li class="nav-item"><a class="nav-link" href="{% url 'create_guide' %}">Create Guide</a></li>
                       <li class="nav-item"><a class="nav-link" href="{% url 'sign_up' %}">Sign Up</a></li>
                       <li class="nav-item"><a class="nav-link" href="{% url 'sign_in' %}">Sign In</a></li>
                     {% endif %}
