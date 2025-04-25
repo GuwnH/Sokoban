@@ -30,8 +30,8 @@ COPY . .
 RUN python manage.py collectstatic --noinput --clear
 
 # Expose ports
-EXPOSE 8000
-EXPOSE 3306
+EXPOSE 8050
 
 # Run application
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "4", "sokoban_backend.wsgi"]
+# CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "4", "sokoban_backend.wsgi"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8050"]
