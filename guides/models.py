@@ -26,6 +26,7 @@ class Guide(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
     guide_level = models.IntegerField()
+    title = models.CharField(max_length=100, default="Untitled Guide")
     guide_text = models.CharField(max_length=10000)
     number_of_moves = models.IntegerField()
     colors_required = models.BooleanField()
@@ -33,5 +34,5 @@ class Guide(models.Model):
 class Image(models.Model):
     image_id = models.AutoField(primary_key=True)
     guide = models.ForeignKey(Guide, on_delete=models.CASCADE)
-    url = models.URLField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='uploads/', null=True, blank=True)
+    alt_text = models.CharField(max_length=255)

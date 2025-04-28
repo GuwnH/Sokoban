@@ -23,4 +23,4 @@ class GuideSerializer(serializers.ModelSerializer):
 class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
-        fields = ['id', 'guide', 'image']
+        fields = '__all__'

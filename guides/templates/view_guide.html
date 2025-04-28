@@ -73,8 +73,13 @@
 
     <section class="images">
         <h3>Images</h3>
-        {% for image in images %}
-            <img src="{{ image.url }}" alt="Guide Image" style="max-width: 100%; height: auto;">
+        {% for image in images%}
+            <div class="guide-image">
+                <img src="{{ image.image.url }}" alt="{{ image.alt_text }}" class="img-fluid mb-3">
+                {% if image.alt_text %}
+                    <p class="image-caption"><small>{{ image.alt_text }}</small></p>
+                {% endif %}
+            </div>
         {% empty %}
             <p>No images available for this guide.</p>
         {% endfor %}

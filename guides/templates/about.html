@@ -102,13 +102,10 @@
             <!-- Join Section -->
             <div class="text-center py-4 bg-primary bg-opacity-10 rounded">
                 <h2>Ready to Master Sokoban?</h2>
-                <p class="lead mb-4">Join our growing community of puzzle enthusiasts</p>
+                <p class="whitetext">Join our growing community of puzzle enthusiasts</p>
                 <div class="d-flex justify-content-center gap-3">
                     <a href="{% url 'sign_up' %}" class="btn btn-primary px-4 py-2">
                         <i class="fas fa-user-plus me-2"></i>Sign Up Free
-                    </a>
-                    <a href="{% url 'search_guides' %}" class="btn btn-outline-primary px-4 py-2">
-                        <i class="fas fa-book-open me-2"></i>Browse Guides
                     </a>
                 </div>
             </div>
@@ -123,6 +120,10 @@
     .feature-box:hover {
         transform: translateY(-3px);
         box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .whitetext {
+        font-size: medium;
+        color: white;
     }
 </style>
 {% endblock %}

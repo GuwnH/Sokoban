@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from rest_framework import viewsets
 from django.contrib.auth.models import User
 from .models import Game, Guide, UserProfile, Image
-from .serializers import GameSerializer, GuideSerializer, UserSerializer
+from .serializers import GameSerializer, GuideSerializer, UserSerializer, ImageSerializer
 from .forms import GuideForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -13,6 +13,7 @@ from django.contrib.auth import logout
 from django.shortcuts import redirect
 from django.utils import timezone
 import random
+from django.conf import settings
 
 def home(request):
     # Get today's date for consistent daily feature
@@ -75,19 +76,34 @@ def signup(request):
 # Guide-related views
 @login_required
 def create_guide(request):
-    games = Game.objects.all()
-    if request.method == 'POST':
-        form = GuideForm(request.POST)
-        if form.is_valid():
-            guide = form.save(commit=False)
-            guide.user = request.user
-            guide.save()
-            return redirect('guide_detail', guide_id=guide.guide_id)
-    else:
-        form = GuideForm()
+    games = Game.objects.all()  # Get all games from the database
+    
+    if request.method == "POST":
+        # Create the guide
+        guide = Guide.objects.create(
+            game_id=request.POST['game'],
+            guide_level=request.POST['guide_level'],
+            title=request.POST['title'],
+            guide_text=request.POST['guide_text'],
+            number_of_moves=request.POST['number_of_moves'],
+            colors_required=request.POST['colors_required'] == "True",
+            user=request.user,  # Note: Changed from 'author' to 'user' to match your model
+        )
+
+        # Handle images
+        images = request.FILES.getlist('images')
+        alt_texts = request.POST.getlist('alt_texts')
+
+        for img_file, alt_text in zip(images, alt_texts):
+            Image.objects.create(
+                guide=guide,
+                image=img_file,  # Note: Your model has 'url' field but you're using file upload
+                alt_text=alt_text
+            )
+        return redirect('guide_detail', guide_id=guide.guide_id)  # Redirect to the new guide
+    
     return render(request, 'make_guides.html', {
-        'form': form,
-        'games': games  # Pass games to template
+        'games': games  # Pass the games queryset to the template
     })
 
 def guide_detail(request, guide_id):
@@ -96,6 +112,7 @@ def guide_detail(request, guide_id):
     return render(request, 'view_guide.html', {
         'guide': guide,
         'images': images,
+        'MEDIA_URL': settings.MEDIA_URL,  # Ensure MEDIA_URL is passed into the context
     })
 
 def profile_detail(request, user_id):
@@ -141,9 +158,6 @@ def about(request):
     return render(request, 'about.html')
 
 def games(request):
-    return render(request, 'games.html')
-
-def games(request):
     games = Game.objects.all()
     return render(request, 'games.html', {'games': games})
 
@@ -181,3 +195,8 @@ class GuideViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+class ImageViewSet(viewsets.ModelViewSet):
+    queryset = Image.objects.all()
+    serializer_class = ImageSerializer
+    permission_classes = [IsAdminUser]

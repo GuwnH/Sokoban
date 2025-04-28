@@ -18,7 +18,7 @@
                     <label for="game">Game:</label>
                     <select name="game" id="game" required>
                         <option value="">Select a game</option>
-                        {% for game in games %}  <!-- Changed from 'g in game' to 'game in games' -->
+                        {% for game in games %}  
                             <option value="{{ game.game_id }}">{{ game.game_name }}</option>
                         {% empty %}
                             <option value="">No games available</option>
@@ -53,8 +53,8 @@
                 <!-- Image Upload -->
                 <div class="form-group">
                     <label for="images">Images:</label>
-                    <input type="file" name="images" id="images" accept="image/*" multiple>
-                    <button type="button" onclick="insertAltText()">Insert alt text</button>
+                    <input type="file" name="images" id="images" accept="image/*" multiple onchange="showAltTextFields(this)">
+                    <div id="altTextFields"></div>
                 </div>
 
                 <!-- Color Dependency -->
@@ -83,7 +83,6 @@
 <script>
     function setColorDependency(value) {
         document.getElementById('colors_required').value = value;
-        // Update button states
         const yesBtn = document.querySelector('.btn.green');
         const noBtn = document.querySelector('.btn.red');
         if (value) {
@@ -95,10 +94,23 @@
         }
     }
 
-    function insertAltText() {
-        alert("Alt text functionality will be added soon!");
+    function showAltTextFields(input) {
+        const container = document.getElementById('altTextFields');
+        container.innerHTML = ''; // Clear old fields
+
+        for (let i = 0; i < input.files.length; i++) {
+            const file = input.files[i];
+            const div = document.createElement('div');
+            div.classList.add('form-group');
+            div.innerHTML = `
+                <label>Alt text for "${file.name}":</label>
+                <input type="text" name="alt_texts" placeholder="Enter alt text for ${file.name}">
+            `;
+            container.appendChild(div);
+        }
     }
 </script>
+
 
 <style>
     body {

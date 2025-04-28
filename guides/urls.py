@@ -1,14 +1,17 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import home, signin, signup, create_guide, guide_detail, profile_detail, search_guides, custom_logout, about, games, suggest_game, UserViewSet, GameViewSet, GuideViewSet
+from .views import home, signin, signup, create_guide, guide_detail, profile_detail, search_guides, custom_logout, about, games, suggest_game, UserViewSet, GameViewSet, GuideViewSet, ImageViewSet
 from django.contrib.auth import views as auth_views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.conf import settings
+from django.conf.urls.static import static
 
 # API router for DRF
 router = DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'games', GameViewSet)
 router.register(r'guides', GuideViewSet)
+router.register(r'images', ImageViewSet)
 
 urlpatterns = [
     path('', home, name='home'),  # Homepage route
@@ -24,3 +27,6 @@ urlpatterns = [
     path('games/', games, name='games'),
     path('suggest-game/', suggest_game, name='suggest_game'),
 ] + staticfiles_urlpatterns()
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
