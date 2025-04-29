@@ -23,52 +23,54 @@
   <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
   <!-- CSS Files -->
   <link id="pagestyle" href="{% static 'css/argon-dashboard.css?v=2.1.0' %}" rel="stylesheet" />
+  <style>
+    body {
+      background-image: url("{% static 'img/hero.jpg' %}");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      min-height: 100vh;
+      position: relative;
+    }
+    .bg-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.5);
+      z-index: 0;
+      pointer-events: none;
+    }
+    .main-content, .footer, .card {
+      position: relative;
+      z-index: 1;
+    }
+    .card {
+      background: rgba(255,255,255,0.95);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+      border-radius: 1rem;
+    }
+  </style>
 </head>
 
 <body class="">
-  <main class="main-content mt-0">
-    <div class="page-header align-items-start min-vh-50 pt-5 pb-11 m-3 border-radius-lg" 
-    style="background-image: url(&quot;{% static 'img/hero.jpg' %}&quot;); background-position: top;">
-      <span class="mask bg-gradient-dark opacity-6"></span>
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-lg-5 text-center mx-auto">
-            <h1 class="text-white mb-2 mt-5">Welcome To SokoGuides!!!</h1>
-            <p class="text-lead text-white">Finding some Sokoban levels hard? Say Less!</p>
-          </div>
+  <div class="bg-overlay"></div>
+  <main class="main-content mt-0 d-flex flex-column justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-5 text-center mx-auto">
+          <h1 class="text-white mb-2 mt-5" style="text-shadow: 0 2px 8px rgba(0,0,0,0.5);">Welcome To SokoGuides!!!</h1>
+          <p class="text-lead text-white" style="text-shadow: 0 2px 8px rgba(0,0,0,0.5);">Finding some Sokoban levels hard? Say Less!</p>
         </div>
       </div>
-    </div>
-    <div class="container">
-      <div class="row mt-lg-n10 mt-md-n11 mt-n10 justify-content-center">
+      <div class="row mt-4 justify-content-center">
         <div class="col-xl-4 col-lg-5 col-md-7 mx-auto">
           <div class="card z-index-0">
             <div class="card-header text-center pt-4">
-              <h5>Register with</h5>
+              <h5>Sign Up to Soko</h5>
             </div>
-            <div class="row px-xl-5 px-sm-4 px-3">
-              <!-- Social login buttons (same as sign-in) -->
-              <div class="col-4 ms-auto px-1">
-                <a class="btn btn-outline-light w-100" href="javascript:;">
-                  <i class="fab fa-facebook"></i>
-                </a>
+            <div class="card-body">
+              <div class="text-center mb-3">
+                <p class="text-sm">Enter your details to create an account.</p>
               </div>
-              <div class="col-4 px-1">
-                <a class="btn btn-outline-light w-100" href="javascript:;">
-                  <i class="fab fa-apple"></i>
-                </a>
-              </div>
-              <div class="col-4 me-auto px-1">
-                <a class="btn btn-outline-light w-100" href="javascript:;">
-                  <i class="fab fa-google"></i>
-                </a>
-              </div>
-              <div class="mt-2 position-relative text-center">
-                <p class="text-sm font-weight-bold mb-2 text-secondary text-border d-inline z-index-2 bg-white px-3">
-                  or
-                </p>
-              </div>
-            </div>
             <div class="card-body">
               {% if messages %}
               <div class="alert alert-danger">
@@ -93,7 +95,7 @@
                   <input type="password" class="form-control" name="password2" placeholder="Confirm Password" aria-label="Confirm Password" required>
                 </div>
                 <div class="text-center">
-                  <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Sign Up</button>
+                    <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2" style="color: #000;" onmouseover="this.style.color='#fff';" onmouseout="this.style.color='#000';">Sign Up</button>
                 </div>
                 <p class="text-sm mt-3 mb-0">Already have an account? <a href="{% url 'sign_in' %}" class="text-dark font-weight-bolder">Sign in</a></p>
               </form>
@@ -108,13 +110,13 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 mb-4 mx-auto text-center">
-          <a href="javascript:;" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
+          <a href="{% url 'about' %}" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
             About Us
           </a>
-          <a href="javascript:;" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
+          <a href="javascript:;" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
             Team
           </a>
-          <a href="javascript:;" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
+          <a href="javascript:;" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
             Blog
           </a>
         </div>
